@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-       maven {url='https://repo.spongepowered.org/repository/maven-public'}
+        maven {url='https://repo.spongepowered.org/repository/maven-public'}
         mavenCentral()
         // Parchment
         maven { url = 'https://maven.parchmentmc.org' }
@@ -9,7 +9,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
 		// Mixin
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
+        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
         // Parchment
         classpath group: 'org.parchmentmc', name: 'librarian', version: '1.+'
     }
@@ -151,7 +151,7 @@ dependencies {
     // GeckoLib
     implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.13')
 	// Mixin
-    annotationProcessor 'org.spongepowered:mixin:${mixin_version}:processor'
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
 
 mixin {
