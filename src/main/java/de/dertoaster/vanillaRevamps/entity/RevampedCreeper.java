@@ -24,7 +24,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationTickable {
-	
+
 	protected final AnimationFactory factory = new AnimationFactory(this);
 
 	public RevampedCreeper(EntityType<? extends Creeper> type, Level level) {
@@ -68,25 +68,31 @@ public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationT
 
 	@Override
 	public boolean hurt(DamageSource pSource, float pAmount) {
-		if (pSource.isFire() && !isWearingAnyArmor(this) && !this.isPowered()) {
+		if (pSource.isExplosion()) {
+			if (!this.isIgnited()) {
+				this.ignite();
+			}
+			pAmount = 0;
+		}
+		if (pSource.isFire() && !isWearingAnyArmor(this) && !this.isPowered() && !this.isIgnited()) {
 			this.ignite();
 		}
 		return super.hurt(pSource, pAmount);
 	}
-	
+
 	@Override
 	public void thunderHit(ServerLevel pLevel, LightningBolt pLightning) {
 		this.entityData.set(DATA_IS_POWERED, true);
-		
+
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(2 * this.getMaxHealth());
 		this.setHealth(this.getMaxHealth());
 	}
-	
+
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, SpawnGroupData pSpawnData, CompoundTag pDataTag) {
 		this.populateDefaultEquipmentSlots(pDifficulty);
 		this.populateDefaultEquipmentEnchantments(pDifficulty);
-		
+
 		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
 
