@@ -1,0 +1,10 @@
+{
+	"required": true,
+	"package": "de.dertoaster.vanillaRevamps.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"refmap": "vanillaevamps.refmap.json",
+	"mixins": [
+		"MonsterMixin"
+	],
+	"minVersion": "0.8"
+}
