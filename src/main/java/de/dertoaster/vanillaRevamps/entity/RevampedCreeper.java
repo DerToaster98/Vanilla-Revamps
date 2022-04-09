@@ -71,7 +71,7 @@ public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationT
 	public void thunderHit(ServerLevel pLevel, LightningBolt pLightning) {
 		this.entityData.set(DATA_IS_POWERED, true);
 		
-		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80);
+		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(2 * this.getMaxHealth());
 		this.setHealth(this.getMaxHealth());
 	}
 
