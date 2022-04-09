@@ -69,7 +69,6 @@ public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationT
 
 	@Override
 	public void thunderHit(ServerLevel pLevel, LightningBolt pLightning) {
-		//TODO: Add AT to maike this protected!
 		this.entityData.set(DATA_IS_POWERED, true);
 		
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80);
