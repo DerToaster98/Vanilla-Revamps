@@ -4,14 +4,18 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import de.dertoaster.vanillaRevamps.init.VREntityTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import software.bernie.geckolib3.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(VanillaRevampsMod.MODID)
@@ -22,6 +26,12 @@ public class VanillaRevampsMod {
 	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public VanillaRevampsMod() {
+		GeckoLib.initialize();
+		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+		
+		VREntityTypes.registerEntityTypes();
+		MinecraftForge.EVENT_BUS.register(new VREntityTypes.EventHandler());
+		
 		// Register the setup method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
@@ -48,5 +58,9 @@ public class VanillaRevampsMod {
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
 			// Register a new block here
 		}
+	}
+
+	public static ResourceLocation prefix(String entityName) {
+		return new ResourceLocation(MODID, entityName);
 	}
 }
