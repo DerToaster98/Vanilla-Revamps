@@ -19,7 +19,7 @@ public class VanillaRevampsMod {
 	public static final String MODID = "vanillarevamps";
 	
 	// Directly reference a slf4j logger
-	private static final Logger LOGGER = LogUtils.getLogger();
+	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public VanillaRevampsMod() {
 		// Register the setup method for modloading
