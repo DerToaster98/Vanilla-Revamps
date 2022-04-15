@@ -113,5 +113,11 @@ public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationT
 	public boolean wantsToPickUp(ItemStack p_21546_) {
 		return super.wantsToPickUp(p_21546_) || (p_21546_ != null && !p_21546_.isEmpty() && p_21546_.getItem() instanceof ArmorItem);
 	}
+	
+	@Override
+	protected boolean canReplaceCurrentItem(ItemStack pCandidate, ItemStack pExisting) {
+		return this.wantsToPickUp(pCandidate) && (pExisting == null || (pExisting != null && pExisting.isEmpty()));
+	}
+	
 
 }
