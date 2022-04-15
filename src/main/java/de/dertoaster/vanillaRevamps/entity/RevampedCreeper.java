@@ -12,6 +12,9 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -98,6 +101,17 @@ public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationT
 
 	public float getSwell() {
 		return this.swell;
+	}
+
+	@Override
+	public ItemStack getPickResult() {
+		SpawnEggItem spawneggitem = SpawnEggItem.byId(EntityType.CREEPER);
+		return spawneggitem == null ? null : new ItemStack(spawneggitem);
+	}
+	
+	@Override
+	public boolean wantsToPickUp(ItemStack p_21546_) {
+		return super.wantsToPickUp(p_21546_) || (p_21546_ != null && !p_21546_.isEmpty() && p_21546_.getItem() instanceof ArmorItem);
 	}
 
 }
