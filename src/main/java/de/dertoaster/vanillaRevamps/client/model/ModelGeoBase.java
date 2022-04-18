@@ -47,6 +47,4 @@ public abstract class ModelGeoBase<T extends LivingEntity & IAnimatable & IAnima
 		return this.MODEL_RESLOC;
 	}
 	
-	protected abstract float getModelInflateValue();
-
 }

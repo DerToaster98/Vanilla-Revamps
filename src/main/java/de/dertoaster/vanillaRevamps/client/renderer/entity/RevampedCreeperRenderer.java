@@ -6,9 +6,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import de.dertoaster.vanillaRevamps.VanillaRevampsMod;
 import de.dertoaster.vanillaRevamps.client.model.entity.RevampedCreeperModel;
 import de.dertoaster.vanillaRevamps.client.renderer.RenderBipedBaseGeo;
-import de.dertoaster.vanillaRevamps.client.renderer.layer.entity.RevampedCreeperArmorLayer;
 import de.dertoaster.vanillaRevamps.entity.RevampedCreeper;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -17,31 +18,37 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.core.util.Color;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class RevampedCreeperRenderer extends RenderBipedBaseGeo<RevampedCreeper> {
 	
 	private static final ResourceLocation TEXTURE = new ResourceLocation(VanillaRevampsMod.MODID, "textures/entity/creeper/creeper.png");
 	private static final ResourceLocation ARMOR_TEXTURE = new ResourceLocation(VanillaRevampsMod.MODID, "textures/entity/creeper/creeper_armor.png");
 	private static final ResourceLocation MODEL_RESLOC = new ResourceLocation(VanillaRevampsMod.MODID, "geo/entity/creeper.geo.json");
+	private static final ResourceLocation MODEL_CHARGED_RESLOC = new ResourceLocation(VanillaRevampsMod.MODID, "geo/entity/creeper_charge_overlay.geo.json");
 	
-	private float currentInflation;
-
+	private final boolean isEnergyRenderer;
+	protected RevampedCreeperRenderer energyRenderer;
+	
 	public RevampedCreeperRenderer(Context renderManager) {
 		super(renderManager, new RevampedCreeperModel(MODEL_RESLOC, TEXTURE, "creeper/creeper"));
-		if(this.modelProvider instanceof RevampedCreeperModel rcm) {
-			rcm.trySetInflationGetter(this::getCurrentInflation);
-		}
+		this.energyRenderer = new RevampedCreeperRenderer(renderManager, new RevampedCreeperModel(MODEL_CHARGED_RESLOC, ARMOR_TEXTURE, "creeper/creeper"), true);
+		this.isEnergyRenderer = false;
 		
-		this.addLayer(new RevampedCreeperArmorLayer(this, TEXTURE_GETTER, MODEL_ID_GETTER, ARMOR_TEXTURE, (f) -> this.currentInflation = f));
+		//this.addLayer(new RevampedCreeperArmorLayer(this, TEXTURE_GETTER, (e) -> MODEL_CHARGED_RESLOC, ARMOR_TEXTURE, CHARGED_MODEL));
 	}
 	
-	public float getCurrentInflation() {
-		return this.currentInflation;
+	private RevampedCreeperRenderer(Context renderManager, final AnimatedGeoModel<RevampedCreeper> model, final boolean isEnergyRenderer) {
+		super(renderManager, model);
+		this.isEnergyRenderer = isEnergyRenderer;
 	}
 	
 	@Override
 	public Color getRenderColor(RevampedCreeper animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn) {
 		Color sr = super.getRenderColor(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn);
+		if(this.isEnergyRenderer) {
+			return sr;
+		}
 		if(animatable.getSwelling(partialTicks) != 0.0F) {
 			float f = animatable.getSwelling(partialTicks);
 		    f = (int)(f * 10.0F) % 2 == 0 ? 0.0F : Mth.clamp(f, 0.5F, 1.0F);
@@ -54,6 +61,9 @@ public class RevampedCreeperRenderer extends RenderBipedBaseGeo<RevampedCreeper>
 
 	@Override
 	protected void calculateArmorStuffForBone(String boneName, RevampedCreeper currentEntity) {
+		if(this.isEnergyRenderer) {
+			return;
+		}
 		switch(boneName) {
 		case "armorBody":
 			this.currentArmorAtBone = chestplate;
@@ -139,10 +149,14 @@ public class RevampedCreeperRenderer extends RenderBipedBaseGeo<RevampedCreeper>
 		
 	}
 	
+	@Override
+	public boolean shouldRender(RevampedCreeper pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
+		return super.shouldRender(pLivingEntity, pCamera, pCamX, pCamY, pCamZ) && (!this.isEnergyRenderer || (this.isEnergyRenderer && pLivingEntity.isPowered()));
+	}
+	
 
 	@Override
 	public void render(RevampedCreeper entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
-		this.currentInflation = 0.0F;
 		float f = entity.getSwelling(partialTicks);
 		float f1 = 1.0F + Mth.sin(f * 100.0F) * f * 0.01F;
 		f = Mth.clamp(f, 0.0F, 1.0F);
@@ -152,6 +166,49 @@ public class RevampedCreeperRenderer extends RenderBipedBaseGeo<RevampedCreeper>
 		float f3 = (1.0F + f * 0.1F) / f1;
 		stack.scale(f2, f3, f2);
 		super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+		if(this.energyRenderer != null && entity.isPowered()) {
+			this.energyRenderer.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+		}
+	}
+	
+	@Override
+	public void renderEarly(RevampedCreeper animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue,
+			float partialTicks) {
+		super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+		if(this.energyRenderer != null && animatable.isPowered()) {
+			this.energyRenderer.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+		}
+	}
+	
+	@Override
+	public void renderLate(RevampedCreeper animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+		super.renderLate(animatable, stackIn, ticks, renderTypeBuffer, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+		if(this.energyRenderer != null && animatable.isPowered()) {
+			this.energyRenderer.renderLate(animatable, stackIn, ticks, renderTypeBuffer, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+		}
+	}
+	
+	@Override
+	public RenderType getRenderType(RevampedCreeper animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+		if(!this.isEnergyRenderer) {
+			return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
+		}
+		float f4 = (float) animatable.tickCount + partialTicks;
+		
+		return RenderType.energySwirl(ARMOR_TEXTURE, this.xOffset(f4) % 1.0F, f4 * 0.01F % 1.0F);
+	}
+	
+	@Override
+	public Integer getUniqueID(RevampedCreeper animatable) {
+		Integer sr = super.getUniqueID(animatable);
+		if(this.isEnergyRenderer) {
+			sr++;
+		}
+		return sr;
+	}
+	
+	private float xOffset(float f) {
+		return f * 0.01F;
 	}
 	
 }
