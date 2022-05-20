@@ -4,7 +4,7 @@
 	"compatibilityLevel": "JAVA_17",
 	"refmap": "vanillaevamps.refmap.json",
 	"mixins": [
-		"MonsterMixin"
+		"RangedCrossbowAttackGoalMixin"
 	],
 	"minVersion": "0.8"
 }
