@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.core.util.Color;
+import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class RevampedCreeperRenderer extends RenderBipedBaseGeo<RevampedCreeper> {
@@ -209,6 +210,17 @@ public class RevampedCreeperRenderer extends RenderBipedBaseGeo<RevampedCreeper>
 	
 	private float xOffset(float f) {
 		return f * 0.01F;
+	}
+
+	@Override
+	protected boolean isArmorBone(GeoBone bone) {
+		if(bone.getName().startsWith("armor")) {
+			if(!bone.cubesAreHidden()) {
+				bone.setCubesHidden(true);
+			}
+			return true;
+		}
+		return false;
 	}
 	
 }
