@@ -149,7 +149,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.0.42'
 
     // GeckoLib
-    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.14')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.18')
 	// Mixin
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
