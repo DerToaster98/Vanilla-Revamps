@@ -4,11 +4,16 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import de.dertoaster.vanillaRevamps.entity.goal.AvoidExplodingCreeperGoal;
+import de.dertoaster.vanillaRevamps.entity.goal.AvoidExplodingCreeperGoal.INotAfraidOfExplodingCreepers;
 import de.dertoaster.vanillaRevamps.init.VREntityTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -48,6 +53,18 @@ public class VanillaRevampsMod {
 	@SubscribeEvent
 	public void onServerStarting(ServerStartingEvent event) {
 		// Do something when the server starts
+	}
+	
+	@SubscribeEvent
+	protected void onEntityJoin(EntityJoinWorldEvent event) {
+		Entity entity = event.getEntity();
+		if(entity == null) {
+			return;
+		}
+		if(entity instanceof PathfinderMob && !(entity instanceof INotAfraidOfExplodingCreepers)) {
+			PathfinderMob monster = (PathfinderMob)entity;
+			monster.goalSelector.addGoal(3, new AvoidExplodingCreeperGoal(monster, 9.0F, 1.2, 1.5));
+		}
 	}
 
 	// You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
