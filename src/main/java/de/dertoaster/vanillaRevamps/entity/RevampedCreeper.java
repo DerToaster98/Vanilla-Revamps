@@ -55,7 +55,7 @@ public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationT
 		}
 		return PlayState.CONTINUE;
 	}
-
+	
 	@Override
 	public AnimationFactory getFactory() {
 		return this.factory;
@@ -85,10 +85,14 @@ public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationT
 
 	@Override
 	public void thunderHit(ServerLevel pLevel, LightningBolt pLightning) {
+		if(this.isPowered()) {
+			this.setHealth(this.getMaxHealth());
+		}
+		else {
+			this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(2 * this.getMaxHealth());
+			this.setHealth(this.getMaxHealth());
+		}
 		this.entityData.set(DATA_IS_POWERED, true);
-
-		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(2 * this.getMaxHealth());
-		this.setHealth(this.getMaxHealth());
 	}
 
 	@Override
