@@ -48,7 +48,7 @@ public class VREntityTypes {
 		ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
 	}
 
-	static final Map<String, EntityType<?>> REPLACER_MAP;
+	static final Map<EntityType<?>, EntityType<?>> REPLACER_MAP;
 
 	static {
 		REPLACER_MAP = new HashMap<>();
@@ -63,8 +63,8 @@ public class VREntityTypes {
 			if (event.getEntity() == null || !(event.getWorld() instanceof ServerLevel)) {
 				return;
 			}
-			final String registryName = event.getEntity().getType().getRegistryName().toString();
-			final EntityType<?> replacement = REPLACER_MAP.getOrDefault(registryName, null);
+			final EntityType<?> originalType = event.getEntity().getType();
+			final EntityType<?> replacement = REPLACER_MAP.getOrDefault(originalType, null);
 			if (replacement != null) {
 				Entity replacedEnt = replacement.create((ServerLevel) event.getWorld(), event.getEntity().getPersistentData(), event.getEntity().getCustomName(), null, event.getEntity().blockPosition(), MobSpawnType.NATURAL, true, true);
 
@@ -79,7 +79,7 @@ public class VREntityTypes {
 
 	static void fillReplacementMap() {
 		// Add in the replacements
-		REPLACER_MAP.put(EntityType.CREEPER.getRegistryName().toString(), CREEPER.get());
+		REPLACER_MAP.put(EntityType.CREEPER, CREEPER.get());
 	}
 
 }
