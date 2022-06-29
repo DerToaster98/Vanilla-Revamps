@@ -7,56 +7,19 @@ import net.minecraftforge.entity.PartEntity;
 
 public interface ISizable {
 
-	// Now, let's proceed to some hackery... (Just some dirty access to entity fields)
-	default float getWidth() {
-		if (this instanceof Entity) {
-			return ((Entity) this).getBbWidth();
-		}
-		return 0F;
-	}
-
-	default float getHeight() {
-		if (this instanceof Entity) {
-			return ((Entity) this).getBbHeight();
-		}
-		return 0F;
-	}
-
-	default float getStepHeight() {
-		if (this instanceof Entity) {
-			return ((Entity) this).maxUpStep;
-		}
-		return 0F;
-	}
-
-	default void setStepHeight(float value) {
-		if (this instanceof Entity) {
-			((Entity) this).maxUpStep = value;
-		}
-	}
-
-	// Used to acquire the default size of the entity
-	float getDefaultWidth();
-
-	float getDefaultHeight();
-
 	// Getter and setter for sizeScale field
 	float getSizeVariation();
-
+	//Only changes the field of the scale holder
 	void applySizeVariation(float value);
 
-	// wrapper for setSize cause interfaces don'T allow protected methods >:(
-	// ReflectionMethod<Void> METHOD_SET_SIZE = new ReflectionMethod<>(Entity.class, "func_70105_a", "setSize", Float.TYPE, Float.TYPE);
-
-	// Access the setSize method of an entity
-	/*
-	 * default void hackSize(float w, float h) { if (this instanceof Entity) { METHOD_SET_SIZE.invoke(this, w, h); } }
-	 */
-
-	default EntityDimensions callOnGetDimensions(EntityDimensions parentResult) {
-		return parentResult.scale(this.getSizeVariation());
+	// Has to be called in getDimensions, performs the actual scaling
+	default EntitySize callOnGetDimensions(EntitySize parentResult) {
+		if(parentResult != null) {
+			return parentResult.scale(this.getSizeVariation());
+		}
+		return parentResult;
 	}
-
+	
 	// This needs to be called in the implementing entity's constructor
 	default void initializeSize() {
 		this.setSizeVariation(1.0F);
