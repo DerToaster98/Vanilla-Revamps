@@ -13,7 +13,7 @@ public interface ISizable {
 	void applySizeVariation(float value);
 
 	// Has to be called in getDimensions, performs the actual scaling
-	default EntitySize callOnGetDimensions(EntitySize parentResult) {
+	default EntityDimensions callOnGetDimensions(EntityDimensions parentResult) {
 		if(parentResult != null) {
 			return parentResult.scale(this.getSizeVariation());
 		}
