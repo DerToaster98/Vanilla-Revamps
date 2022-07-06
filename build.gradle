@@ -11,9 +11,11 @@ buildscript {
 		// Mixin
         classpath "org.spongepowered:mixingradle:${mixingradle_version}"
         // Parchment
-        classpath group: 'org.parchmentmc', name: 'librarian', version: '1.+'
+        // classpath group: 'org.parchmentmc', name: 'librarian', version: '1.+'
+		classpath 'org.parchmentmc:librarian:1.+'
     }
 }
+
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
@@ -31,7 +33,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'parchment', version: '2022.03.13-1.18.2'
+    mappings channel: 'parchment', version: '1.18.2-2022.03.13-1.19'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -39,7 +41,7 @@ minecraft {
     // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
-		    taskName 'runClient VR 1.18.2'
+		    taskName 'runClient VR 1.19'
             workingDirectory project.file('run')
 			arg "-mixin.config=vanillarevamps.mixins.json"
 
@@ -66,7 +68,7 @@ minecraft {
         }
 
         server {
-		    taskName 'runServer VR 1.18.2'
+		    taskName 'runServer VR 1.19'
             workingDirectory project.file('run')
 			arg "-mixin.config=vanillarevamps.mixins.json"
 
@@ -88,7 +90,7 @@ minecraft {
         // By default, the server will crash when no gametests are provided.
         // The gametest system is also enabled by default for other run configs under the /test command.
         gameTestServer {
-		    taskName 'runGameTestServer VR 1.18.2'
+		    taskName 'runGameTestServer VR 1.19'
             workingDirectory project.file('run')
 
             // Recommended logging data for a userdev environment
@@ -114,7 +116,7 @@ minecraft {
         }
 
         data {
-		    taskName 'runData VR 1.18.2'
+		    taskName 'runData VR 1.19'
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'
@@ -146,10 +148,10 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.42'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.63'
 
     // GeckoLib
-    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.22')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.6')
 	// Mixin
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
