@@ -17,7 +17,9 @@ import net.minecraft.world.phys.Vec3;
 public class RevampedSlime extends Slime {
 
 	private static final EntityDimensions BASE_DIMENSIONS = EntityDimensions.scalable(0.5F, 0.5F);
-	private static final int MAX_SLIMES = 256;
+	//Max slimes of 512 results in a maximum size of 4x4x4 blocks
+	//Max side length: <MAX_SLIMES>^(1/3) * 0.5
+	private static final int MAX_SLIMES = 512;
 	private static final float[] SIZE_SCALE_PRE_COMPUTED = new float[MAX_SLIMES];
 
 	protected static final float[] COLOR_VARIANTS = new float[] { 
