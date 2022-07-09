@@ -10,7 +10,6 @@ import de.dertoaster.vanillaRevamps.init.VREntityTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -19,7 +18,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegisterEvent;
 import software.bernie.geckolib3.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -64,16 +62,6 @@ public class VanillaRevampsMod {
 		if(entity instanceof PathfinderMob && !(entity instanceof INotAfraidOfExplodingCreepers)) {
 			PathfinderMob monster = (PathfinderMob)entity;
 			monster.goalSelector.addGoal(3, new AvoidExplodingCreeperGoal(monster, 9.0F, 1.2, 1.5));
-		}
-	}
-
-	// You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
-	// Event bus for receiving Registry Events)
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-	public static class RegistryEvents {
-		@SubscribeEvent
-		public static void onBlocksRegistry(final RegisterEvent.RegisterHelper<Block> blockRegistryEvent) {
-			// Register a new block here
 		}
 	}
 
