@@ -94,7 +94,12 @@ public class RevampedSlime extends Slime {
 
 	@Override
 	public EntityDimensions getDimensions(Pose pPose) {
-		return BASE_DIMENSIONS.scale(SIZE_SCALE_PRE_COMPUTED[this.getSize()]);
+		return BASE_DIMENSIONS.scale(this.getScale());
+	}
+	
+	@Override
+	public float getScale() {
+		return SIZE_SCALE_PRE_COMPUTED[this.getSize()];
 	}
 
 	@Override

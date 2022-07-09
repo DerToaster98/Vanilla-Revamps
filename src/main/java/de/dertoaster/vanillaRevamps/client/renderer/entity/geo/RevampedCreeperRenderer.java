@@ -1,4 +1,4 @@
-package de.dertoaster.vanillaRevamps.client.renderer.entity;
+package de.dertoaster.vanillaRevamps.client.renderer.entity.geo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
