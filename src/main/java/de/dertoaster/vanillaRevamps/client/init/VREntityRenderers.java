@@ -1,7 +1,7 @@
 package de.dertoaster.vanillaRevamps.client.init;
 
 import de.dertoaster.vanillaRevamps.VanillaRevampsMod;
-import de.dertoaster.vanillaRevamps.client.renderer.entity.RevampedCreeperRenderer;
+import de.dertoaster.vanillaRevamps.client.renderer.entity.geo.RevampedCreeperRenderer;
 import de.dertoaster.vanillaRevamps.init.VREntityTypes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
