@@ -222,5 +222,15 @@ public class RevampedCreeperRenderer extends RenderBipedBaseGeo<RevampedCreeper>
 		}
 		return false;
 	}
+
+	@Override
+	protected void preRenderBlock(PoseStack matrixStack, BlockState block, String boneName, RevampedCreeper currentEntity) {
+		
+	}
+
+	@Override
+	protected void postRenderBlock(PoseStack matrixStack, BlockState block, String boneName, RevampedCreeper currentEntity) {
+		
+	}
 	
 }

@@ -38,8 +38,8 @@ public abstract class RenderEntityGeo<T extends LivingEntity & IAnimatable> exte
 	protected RenderEntityGeo(EntityRendererProvider.Context renderManager, AnimatedGeoModel<T> modelProvider, float widthScale, float heightScale, float shadowSize) {
 		super(renderManager, modelProvider);
 
-		this.MODEL_ID_GETTER = modelProvider::getModelLocation;
-		this.TEXTURE_GETTER = modelProvider::getTextureLocation;
+		this.MODEL_ID_GETTER = modelProvider::getModelResource;
+		this.TEXTURE_GETTER = modelProvider::getTextureResource;
 
 		this.shadowRadius = shadowSize;
 		this.widthScale = widthScale;

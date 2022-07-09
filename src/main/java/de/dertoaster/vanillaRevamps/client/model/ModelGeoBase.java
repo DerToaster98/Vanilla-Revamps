@@ -25,7 +25,7 @@ public abstract class ModelGeoBase<T extends LivingEntity & IAnimatable & IAnima
 
 	
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public ResourceLocation getTextureResource(T entity) {
 		// Custom texture end
 		if (entity instanceof ITextureVariants) {
 			if (((ITextureVariants) entity).getTextureCount() > 1) {
@@ -43,7 +43,7 @@ public abstract class ModelGeoBase<T extends LivingEntity & IAnimatable & IAnima
 	}
 
 	@Override
-	public ResourceLocation getModelLocation(T object) {
+	public ResourceLocation getModelResource(T object) {
 		return this.MODEL_RESLOC;
 	}
 	

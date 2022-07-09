@@ -97,8 +97,8 @@ public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationT
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, SpawnGroupData pSpawnData, CompoundTag pDataTag) {
-		this.populateDefaultEquipmentSlots(pDifficulty);
-		this.populateDefaultEquipmentEnchantments(pDifficulty);
+		this.populateDefaultEquipmentSlots(pLevel.getRandom(), pDifficulty);
+		this.populateDefaultEquipmentEnchantments(pLevel.getRandom(), pDifficulty);
 
 		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}

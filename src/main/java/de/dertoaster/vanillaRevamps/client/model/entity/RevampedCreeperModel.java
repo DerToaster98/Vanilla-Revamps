@@ -14,7 +14,7 @@ public class RevampedCreeperModel extends ModelGeoBase<RevampedCreeper> {
 	static final ResourceLocation ANIMATION_RESLOC = new ResourceLocation(VanillaRevampsMod.MODID, "animations/entity/creeper.animation.json");
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(RevampedCreeper animatable) {
+	public ResourceLocation getAnimationResource(RevampedCreeper animatable) {
 		return ANIMATION_RESLOC;
 	}
 	
