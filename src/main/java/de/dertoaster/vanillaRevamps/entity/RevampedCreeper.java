@@ -42,7 +42,7 @@ public class RevampedCreeper extends Creeper implements IAnimatable, IAnimationT
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController(this, "controller-main", 20, this::predicate));
+		data.addAnimationController(new AnimationController(this, "controller-main", 10, this::predicate));
 	}
 
 	private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {

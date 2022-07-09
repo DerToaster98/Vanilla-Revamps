@@ -3,37 +3,25 @@
 	"animations": {
 		"animation.creeper.idle": {
 			"loop": true,
-			"animation_length": 2.08,
+			"animation_length": 0.5,
 			"bones": {
 				"body": {
 					"rotation": {
 						"0.0": {
-							"vector": [-7.5, 0, 0]
-						},
-						"0.52": {
 							"vector": [0, 0, 0]
 						},
-						"1.04": {
-							"vector": [7.5, 0, 0]
-						},
-						"1.56": {
+						"0.5": {
 							"vector": [0, 0, 0]
-						},
-						"2.08": {
-							"vector": [-7.5, 0, 0]
 						}
 					}
 				},
 				"headBaseRotator": {
 					"rotation": {
 						"0.0": {
-							"vector": [7.5, 0, 0]
+							"vector": [0, 0, 0]
 						},
-						"1.04": {
-							"vector": [-7.5, 0, 0]
-						},
-						"2.08": {
-							"vector": [7.5, 0, 0]
+						"0.5": {
+							"vector": [0, 0, 0]
 						}
 					}
 				}
