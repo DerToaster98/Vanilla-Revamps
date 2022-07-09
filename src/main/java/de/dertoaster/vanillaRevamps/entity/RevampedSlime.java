@@ -17,10 +17,33 @@ import net.minecraft.world.phys.Vec3;
 public class RevampedSlime extends Slime {
 
 	private static final EntityDimensions BASE_DIMENSIONS = EntityDimensions.scalable(0.5F, 0.5F);
-	private static final int MAX_SLIMES = 256;
+	//Max slimes of 512 results in a maximum size of 4x4x4 blocks
+	//Max side length: <MAX_SLIMES>^(1/3) * 0.5
+	private static final int MAX_SLIMES = 512;
 	private static final float[] SIZE_SCALE_PRE_COMPUTED = new float[MAX_SLIMES];
 
-	protected static final float[] COLOR_VARIANTS = new float[] { 1F, 0F, 0F, 0F, 1F, 0F, 0F, 0F, 1F, 0F, 0F, 0F };
+	protected static final float[] COLOR_VARIANTS = new float[] { 
+		//Red
+		1F, 0F, 0F,
+		//Green
+		0F, 1F, 0F, 
+		//Blue
+		0F, 0F, 1F, 
+		//White
+		1F, 1F, 1F,
+		//Light blue
+		0F, 1F, 1F,
+		//Orange
+		1F, 0.5F, 0F,
+		//Yellow
+		1F, 1F, 0F,
+		//Purple
+		0.4F, 0F, 0.8F,
+		//Pink
+		1F, 0.2F, 1F,
+		//Light green
+		0F, 1F, 0.5F
+	};
 	protected static final EntityDataAccessor<Float> COLOR_RED = SynchedEntityData.defineId(RevampedSlime.class, EntityDataSerializers.FLOAT);
 	protected static final EntityDataAccessor<Float> COLOR_GREEN = SynchedEntityData.defineId(RevampedSlime.class, EntityDataSerializers.FLOAT);
 	protected static final EntityDataAccessor<Float> COLOR_BLUE = SynchedEntityData.defineId(RevampedSlime.class, EntityDataSerializers.FLOAT);
@@ -35,7 +58,7 @@ public class RevampedSlime extends Slime {
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 
-		int variant = this.getRandom().nextInt(4);
+		int variant = this.getRandom().nextInt(COLOR_VARIANTS.length / 3);
 		variant *= 3;
 
 		this.entityData.define(COLOR_RED, COLOR_VARIANTS[variant]);
