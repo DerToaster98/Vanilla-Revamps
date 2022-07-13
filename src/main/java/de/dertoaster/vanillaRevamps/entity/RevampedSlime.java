@@ -2,6 +2,7 @@ package de.dertoaster.vanillaRevamps.entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -218,16 +219,16 @@ public class RevampedSlime extends Slime {
 		}
 	}
 
-	private float getColorRed() {
+	public float getColorRed() {
 		return this.entityData.get(COLOR_RED);
 	}
 
-	private float getColorGreen() {
+	public float getColorGreen() {
 		return this.entityData.get(COLOR_GREEN);
 	}
 
-	private float getColorBlue() {
+	public float getColorBlue() {
 		return this.entityData.get(COLOR_BLUE);
 	}
-
+	
 }

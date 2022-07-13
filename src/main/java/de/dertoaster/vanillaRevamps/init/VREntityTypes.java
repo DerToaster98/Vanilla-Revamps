@@ -5,6 +5,7 @@ import java.util.Map;
 
 import de.dertoaster.vanillaRevamps.VanillaRevampsMod;
 import de.dertoaster.vanillaRevamps.entity.RevampedCreeper;
+import de.dertoaster.vanillaRevamps.entity.RevampedSlime;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.EntityType.EntityFactory;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,6 +31,7 @@ public class VREntityTypes {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, VanillaRevampsMod.MODID);
 
 	public static final RegistryObject<EntityType<RevampedCreeper>> CREEPER = registerSized(RevampedCreeper::new, "creeper", 0.6F, 1.7F, 3);
+	public static final RegistryObject<EntityType<RevampedSlime>> SLIME = registerSized(RevampedSlime::new, "slime", 0.25F, 0.25F, 3);
 
 	protected static <T extends Entity> RegistryObject<EntityType<T>> registerSizedHumanoid(EntityFactory<T> factory, final String entityName, int updateInterval) {
 		return registerSized(factory, entityName, 0.6F, 1.875F, updateInterval);
@@ -42,6 +45,7 @@ public class VREntityTypes {
 	@SubscribeEvent
 	public static void initializeAttributes(EntityAttributeCreationEvent event) {
 		event.put(CREEPER.get(), Creeper.createAttributes().build());
+		event.put(SLIME.get(), Monster.createMonsterAttributes().build());
 	}
 
 	public static void registerEntityTypes() {
@@ -80,6 +84,7 @@ public class VREntityTypes {
 	static void fillReplacementMap() {
 		// Add in the replacements
 		REPLACER_MAP.put(EntityType.CREEPER, CREEPER.get());
+		REPLACER_MAP.put(EntityType.SLIME, SLIME.get());
 	}
 
 }

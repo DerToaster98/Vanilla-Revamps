@@ -1,7 +1,7 @@
 package de.dertoaster.vanillaRevamps.client.init;
 
 import de.dertoaster.vanillaRevamps.VanillaRevampsMod;
-import de.dertoaster.vanillaRevamps.client.model.ModelRevampedSlime;
+import de.dertoaster.vanillaRevamps.client.model.entity.ModelRevampedSlime;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
