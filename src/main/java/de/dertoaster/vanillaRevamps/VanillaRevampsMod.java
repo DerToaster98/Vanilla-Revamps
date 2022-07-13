@@ -70,6 +70,6 @@ public class VanillaRevampsMod {
 	}
 
 	public static ResourceLocation prefixEntityTexture(String string) {
-		return prefix("textures/entity/");
+		return prefix("textures/entity/" + string);
 	}
 }
