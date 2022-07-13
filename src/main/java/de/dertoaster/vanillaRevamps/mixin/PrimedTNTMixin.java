@@ -23,9 +23,8 @@ public abstract class PrimedTNTMixin extends Entity {
 	public PrimedTNTMixin(EntityType<?> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
 	}
-
-	@Inject(at = @At("HEAD"), method = "tick()V", cancellable = true)
-	private void mxinTick(CallbackInfo ci) {
+	
+	private void handleContactExplosive() {
 		if(((PrimedTnt)((Object)this)).getFuse() <= 0 || !this.isAlive() || this.isRemoved()) {
 			return;
 		}
@@ -43,6 +42,11 @@ public abstract class PrimedTNTMixin extends Entity {
 			}
 		}
 		this.vLastTick = v;
+	}
+
+	@Inject(at = @At("HEAD"), method = "tick()V", cancellable = true)
+	private void mxinTick(CallbackInfo ci) {
+		this.handleContactExplosive();
 	}
 
 }
