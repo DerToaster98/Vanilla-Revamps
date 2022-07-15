@@ -2,7 +2,6 @@ package de.dertoaster.vanillaRevamps.entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -24,7 +23,7 @@ public class RevampedSlime extends Slime {
 	private static final float[] SIZE_SCALE_PRE_COMPUTED = new float[MAX_SLIMES];
 
 	protected static final float[] COLOR_VARIANTS = new float[] { 
-		//Red
+		//Red	
 		1F, 0F, 0F,
 		//Green
 		0F, 1F, 0F, 
