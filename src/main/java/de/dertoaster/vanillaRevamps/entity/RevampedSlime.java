@@ -1,5 +1,6 @@
 package de.dertoaster.vanillaRevamps.entity;
 
+import de.dertoaster.vanillaRevamps.entity.goal.slime.SlimeMergeGoal;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,11 +11,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class RevampedSlime extends Slime {
+	
+	public static final int MIN_TIME_BEFORE_MERGING = 400;
 
 	private static final EntityDimensions BASE_DIMENSIONS = EntityDimensions.scalable(0.5F, 0.5F);
 	//Max slimes of 512 results in a maximum size of 4x4x4 blocks
@@ -55,6 +61,16 @@ public class RevampedSlime extends Slime {
 	}
 
 	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+	
+	@Override
+	public boolean canCollideWith(Entity pEntity) {
+		return !(pEntity instanceof RevampedSlime);
+	}
+	
+	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 
@@ -65,6 +81,20 @@ public class RevampedSlime extends Slime {
 		this.entityData.define(COLOR_GREEN, COLOR_VARIANTS[variant + 1]);
 		this.entityData.define(COLOR_BLUE, COLOR_VARIANTS[variant + 2]);
 	}
+	
+	@Override
+	protected void registerGoals() {
+	      this.goalSelector.addGoal(1, new Slime.SlimeFloatGoal(this));
+	      //this.goalSelector.addGoal(2, new SlimeAvoidLargerMobsGoal(this, 8F, 1.0D, 1.0D));
+	      this.goalSelector.addGoal(3, new SlimeMergeGoal(this, 1.0, 64));
+	      //this.goalSelector.addGoal(4, new Slime.SlimeAttackGoal(this));
+	      //this.goalSelector.addGoal(5, new Slime.SlimeRandomDirectionGoal(this));
+	      this.goalSelector.addGoal(6, new Slime.SlimeKeepOnJumpingGoal(this));
+	      this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, (p_33641_) -> {
+	         return Math.abs(p_33641_.getY() - this.getY()) <= 4.0D;
+	      }));
+	      this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+	   }
 	
 	@Override
 	public void addAdditionalSaveData(CompoundTag pCompound) {
@@ -127,7 +157,7 @@ public class RevampedSlime extends Slime {
 
 	@Override
 	public void push(Entity pEntity) {
-		if (pEntity instanceof RevampedSlime rs) {
+		if (pEntity instanceof RevampedSlime rs && this.tickCount > MIN_TIME_BEFORE_MERGING && pEntity.tickCount > MIN_TIME_BEFORE_MERGING) {
 			this.mergeColors(rs);
 			this.merge(rs);
 
@@ -144,6 +174,10 @@ public class RevampedSlime extends Slime {
 
 		int size = Mth.clamp(mySize + theirSize, mySize, MAX_SLIMES);
 		this.setSize(size, true);
+		
+		//Now, relocate
+		Vec3 newPos = this.position().add(rs.position().subtract(this.position()).multiply(0.5, 0.5, 0.5));
+		this.setPos(newPos);
 	}
 
 	@Override
