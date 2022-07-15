@@ -16,7 +16,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -28,7 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod.EventBusSubscriber(modid = VanillaRevampsMod.MODID, bus = Bus.MOD)
 public class VREntityTypes {
 
-	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, VanillaRevampsMod.MODID);
+	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, VanillaRevampsMod.MODID);
 
 	public static final RegistryObject<EntityType<RevampedCreeper>> CREEPER = registerSized(RevampedCreeper::new, "creeper", 0.6F, 1.7F, 3);
 	public static final RegistryObject<EntityType<RevampedSlime>> SLIME = registerSized(RevampedSlime::new, "slime", 0.25F, 0.25F, 3);
@@ -60,20 +60,20 @@ public class VREntityTypes {
 
 	public static class EventHandler {
 		@SubscribeEvent
-		public void onEntityJoin(final EntityJoinWorldEvent event) {
+		public void onEntityJoin(final EntityJoinLevelEvent event) {
 			if (REPLACER_MAP.isEmpty()) {
 				fillReplacementMap();
 			}
-			if (event.getEntity() == null || !(event.getWorld() instanceof ServerLevel)) {
+			if (event.getEntity() == null || !(event.getLevel() instanceof ServerLevel)) {
 				return;
 			}
 			final EntityType<?> originalType = event.getEntity().getType();
 			final EntityType<?> replacement = REPLACER_MAP.getOrDefault(originalType, null);
 			if (replacement != null) {
-				Entity replacedEnt = replacement.create((ServerLevel) event.getWorld(), event.getEntity().getPersistentData(), event.getEntity().getCustomName(), null, event.getEntity().blockPosition(), MobSpawnType.NATURAL, true, true);
+				Entity replacedEnt = replacement.create((ServerLevel) event.getLevel(), event.getEntity().getPersistentData(), event.getEntity().getCustomName(), null, event.getEntity().blockPosition(), MobSpawnType.NATURAL, true, true);
 
 				if (replacedEnt != null) {
-					event.getWorld().addFreshEntity(replacedEnt);
+					event.getLevel().addFreshEntity(replacedEnt);
 					event.setCanceled(true);
 					event.getEntity().remove(RemovalReason.DISCARDED);
 				}

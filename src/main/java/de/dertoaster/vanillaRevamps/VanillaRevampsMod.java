@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -54,7 +54,7 @@ public class VanillaRevampsMod {
 	}
 	
 	@SubscribeEvent
-	protected void onEntityJoin(EntityJoinWorldEvent event) {
+	protected void onEntityJoin(EntityJoinLevelEvent event) {
 		Entity entity = event.getEntity();
 		if(entity == null) {
 			return;
